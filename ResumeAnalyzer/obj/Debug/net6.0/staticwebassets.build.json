@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "fIwl6YgXAkzXYMHerXqsXNoZyEaQF7tMXGRueKNWmsY=",
+  "Source": "ResumeAnalyzer",
+  "BasePath": "_content/ResumeAnalyzer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
