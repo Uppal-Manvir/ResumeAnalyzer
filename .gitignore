@@ -1,0 +1,8 @@
+bin/
+obj/
+.vscode/
+*.log
+*.dbnode_modules/
+wwwroot/
+appsettings.json
+appsettings.Development.json
