@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+//var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 
@@ -15,6 +16,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+//ignore just want to see
+var environment = builder.Environment.EnvironmentName;
+Console.WriteLine($"Current Environment: {environment}");
 //test
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

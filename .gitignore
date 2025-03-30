@@ -1,3 +1,5 @@
+ResumeAnalyzer/obj/Debug/net6.0/ResumeAnalyzer.csproj.CoreCompileInputs.cache
+ResumeAnalyzer/bin/Debug/net6.0/ResumeAnalyzer.dll
 bin/
 obj/
 .vscode/
@@ -6,3 +8,52 @@ obj/
 wwwroot/
 appsettings.json
 appsettings.Development.json
+
+# macOS-specific files
+.DS_Store
+
+# Node.js (Frontend) files
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+tailwind.config.js
+postcss.config.js
+next.config.js
+public/build/
+
+# Build & Output files (Backend)
+bin/
+obj/
+*.pdb
+*.dll
+*.exe
+*.so
+*.dylib
+*.lib
+*.log
+dist/
+build/
+
+# Configuration files
+.env
+.env.local
+.env.development
+.env.production
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+launchSettings.json
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.suo
+*.user
+*.rsuser
+*.csproj.user
+*.sln.docstates
+*.swp
+*.dll
+ResumeAnalyzer/bin/*
+ResumeAnalyzer/bin/Debug/net6.0/appsettings.Development.json
