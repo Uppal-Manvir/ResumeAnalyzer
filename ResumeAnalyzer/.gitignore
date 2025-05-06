@@ -1,6 +1,5 @@
-ResumeAnalyzer/obj/Debug/net6.0/ResumeAnalyzer.csproj.CoreCompileInputs.cache
-ResumeAnalyzer/bin/Debug/net6.0/ResumeAnalyzer.dll
 bin/
+ResumeAnalyzer/bin/*
 obj/
 .vscode/
 *.log
@@ -25,7 +24,6 @@ public/build/
 # Build & Output files (Backend)
 bin/
 obj/
-*/obj/
 *.pdb
 *.dll
 *.exe
@@ -56,7 +54,3 @@ launchSettings.json
 *.sln.docstates
 *.swp
 *.dll
-ResumeAnalyzer/bin/*
-ResumeAnalyzer/bin/Debug/net6.0/appsettings.Development.json
-ResumeAnalyzer/obj/
-ResumeAnalyzer/obj/Debug/net6.0/refint/ResumeAnalyzer.dll
