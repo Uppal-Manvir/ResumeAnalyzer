@@ -8,13 +8,32 @@ using OpenAI.Embeddings;
 
 [Route("api/JobMatch")]
 [ApiController]
-public class JobMatchController : ControllerBase{
+public class JobMatchService : ControllerBase{
     private string? _openAiKey;
 
-    public JobMatchController (IConfiguration configuration){
+    public JobMatchService (IConfiguration configuration){
         _openAiKey = configuration["OpenAI:ApiKey"];
 
     }
+
+    [HttpPost("compareScore")]
+    public async Task<IActionResult> CompareJobToResumeScore([FromBody] ResumeJobComparison request){
+        if(string.IsNullOrWhiteSpace(request.JobDescription) || string.IsNullOrWhiteSpace(request.ResumeText)){
+            return BadRequest("Both resume text and job description are req");
+        }
+
+        double matchScore = await CalculateSimilarity(request.JobDescription, request.ResumeText);
+
+
+        return Ok(
+            new{
+                message = "Score calculated",
+                score = matchScore,
+            }
+        );
+
+    }
+
 
     [HttpPost("compare")]
     public async Task<IActionResult> CompareJobToResume([FromBody] ResumeJobComparison request){
@@ -36,7 +55,7 @@ public class JobMatchController : ControllerBase{
 
     }
 
-    private async Task<string> GenerateResumeFeedback(string resumeText, string jobDescription)
+    public async Task<string> GenerateResumeFeedback(string resumeText, string jobDescription)
     {
         ChatClient client = new(model: "gpt-4o", _openAiKey);
 
@@ -98,22 +117,22 @@ public class JobMatchController : ControllerBase{
     private double CosineSimilarity(ReadOnlyMemory<float> resumeEmbed, ReadOnlyMemory<float> jobEmbed)
     {
         double dotProduct = 0.0;
-    double magnitude1 = 0.0;
-    double magnitude2 = 0.0;
+        double magnitude1 = 0.0;
+        double magnitude2 = 0.0;
 
-    for (int i = 0; i < resumeEmbed.Length; i++)
-    {
-        dotProduct += resumeEmbed.Span[i] * jobEmbed.Span[i]; // Multiply corresponding elements
-        magnitude1 += Math.Pow(resumeEmbed.Span[i], 2);   // Sum of squares for vector 1
-        magnitude2 += Math.Pow(jobEmbed.Span[i], 2);   // Sum of squares for vector 2
-    }
+        for (int i = 0; i < resumeEmbed.Length; i++)
+        {
+            dotProduct += resumeEmbed.Span[i] * jobEmbed.Span[i]; // Multiply corresponding elements
+            magnitude1 += Math.Pow(resumeEmbed.Span[i], 2);   // Sum of squares for vector 1
+            magnitude2 += Math.Pow(jobEmbed.Span[i], 2);   // Sum of squares for vector 2
+        }
 
-    magnitude1 = Math.Sqrt(magnitude1); // Square root to get magnitude
-    magnitude2 = Math.Sqrt(magnitude2);
+        magnitude1 = Math.Sqrt(magnitude1); // Square root to get magnitude
+        magnitude2 = Math.Sqrt(magnitude2);
 
-    if (magnitude1 == 0 || magnitude2 == 0) return 0; // Avoid division by zero
+        if (magnitude1 == 0 || magnitude2 == 0) return 0; // Avoid division by zero
 
-    return dotProduct / (magnitude1 * magnitude2); // Cosine similarity formula
+        return Math.Round(dotProduct / (magnitude1 * magnitude2),2); // Cosine similarity formula
     }
 }
 

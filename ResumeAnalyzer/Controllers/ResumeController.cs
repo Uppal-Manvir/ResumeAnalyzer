@@ -8,6 +8,10 @@ using System.Text;
 [ApiController]
 public class ResumeController : ControllerBase
 {
+    private readonly JobMatchService  _jobMatchService;
+    public ResumeController(JobMatchService jobMatchService){
+        _jobMatchService = jobMatchService;
+    }
     [HttpPost("upload")]
     public async Task<IActionResult> UploadResume(IFormFile file)
     {
@@ -21,7 +25,7 @@ public class ResumeController : ControllerBase
             await file.CopyToAsync(stream);
         }
 
-        var text = ExtractTextFromPDF(filePath);
+        var text = ExtractTextFromPDFSaved(filePath);
 
         return Ok(
             new { 
@@ -38,15 +42,42 @@ public class ResumeController : ControllerBase
         {
             return BadRequest("Resume and job description are required.");
         }
+        string resumeText = ExtractTextFromPDFFile(resume);
+    
+        if (string.IsNullOrWhiteSpace(resumeText))
+        {
+            return BadRequest("Could not extract text from resume.");
+        }
+        double matchScore = await _jobMatchService.CalculateSimilarity(jobDescription, resumeText);
 
-        // Process the file and job description
-        string fileName = Path.GetFileName(resume.FileName);
-        Console.WriteLine($"Received resume: {fileName}");
-        Console.WriteLine($"Job description: {jobDescription}");
+        string aiFeedback = await _jobMatchService.GenerateResumeFeedback(resumeText, jobDescription);
 
-        return Ok(new { message = "Resume processed successfully" });
+
+        return Ok(new 
+        { 
+            message = "Resume processed successfully",
+            score = matchScore,
+            feedback = aiFeedback
+        });
     }
-    private string ExtractTextFromPDF(string filePath){
+    private string ExtractTextFromPDFFile(IFormFile file)
+{
+    if (file == null || file.Length == 0)
+        return "Unsupported File Type";
+
+    using (var stream = file.OpenReadStream())
+    using (PdfReader pdfReader = new PdfReader(stream))
+    using (PdfDocument pdfDoc = new PdfDocument(pdfReader))
+    {
+        StringBuilder text = new StringBuilder();
+        for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
+        {
+            text.Append(PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i)));
+        }
+        return text.ToString();
+    }
+}
+    private string ExtractTextFromPDFSaved(string filePath){
         if(Path.GetExtension(filePath).ToLower() == ".pdf"){
             StringBuilder text = new StringBuilder();
 

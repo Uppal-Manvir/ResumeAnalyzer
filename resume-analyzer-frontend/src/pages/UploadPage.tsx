@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useResume } from "../context/ResumeJobContext"
 
 export default function UploadPage() {
-  const { setResume, setJobDescription ,submitResumeJobData} = useResume();
+  const { setResume, setJobDescription ,submitResumeJobData, loading} = useResume();
   const navigate = useNavigate();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +35,7 @@ export default function UploadPage() {
                 accept=".pdf"
                 onChange={handleFileChange}
                 className="border border-gray-300 p-2 rounded w-full"
+                disabled={loading}
             />
             </div>
 
@@ -46,6 +47,7 @@ export default function UploadPage() {
                 placeholder="Paste job description here..."
                 onChange={handleTextChange}
                 className="border border-gray-300 p-2 rounded w-full resize-none"
+                disabled={loading}
             />
             </div>
 

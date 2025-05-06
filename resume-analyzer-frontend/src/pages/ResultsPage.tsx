@@ -3,7 +3,12 @@ import { useResume } from "../context/ResumeJobContext";
 
 export default function ResultsPage() {
   const navigate = useNavigate();
-  const {resumeFile, jobDescription} = useResume();
+  const {resumeFile, jobDescription, result} = useResume();
+
+  if (!result) {
+    navigate("/upload");
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -13,13 +18,17 @@ export default function ResultsPage() {
         {/* Display Match Score */}
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Match Score:</h2>
-          <p className="text-2xl font-bold text-green-500">--%</p>
+          <p className="text-2xl font-bold text-green-500">{result.score}%</p>
         </div>
 
         {/* Display AI Feedback */}
         <div className="mb-4">
           <h2 className="text-lg font-semibold">AI Feedback:</h2>
-          <p className="text-gray-700">Waiting for analysis...</p>
+          <ul className="list-disc ml-6 mt-2">
+          {result.feedback.split("\n").map((line, index) => (
+            <li key={index}>{line}</li>
+          ))}
+          </ul>
         </div>
 
         {/* Go Back Button */}
