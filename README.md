@@ -26,12 +26,17 @@ An AI-driven web application that analyzes resumes against job descriptions and 
 
 ## 🚀 Status
 
-Phase 1 complete:  
-- Resume/job comparison  
-- AI feedback  
-- Job scraping + backend scoring  
+Phase 1 & 2 complete:  
+- Resume-to-job matching using OpenAI embeddings  
+- AI-powered feedback with resume improvement suggestions  
+- Frontend UI for upload, results, and feedback  
+- Job scraping from multiple platforms (Indeed, etc.)  
+- Automatic backend scoring of new job posts  
+- Matching logic to skip duplicate or old jobs 
 
-Next: Notification system for high-scoring jobs and user authentication.
+Next: Notification system for high-scoring jobs and user authentication and refining.
+
+See [TODO.md](TODO.md) for upcoming features and planned improvements.
 
 ## 📂 Project Structure
 
